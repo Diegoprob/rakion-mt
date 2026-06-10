@@ -1,26 +1,125 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rakion MT Sorteador</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🎲 Rakion MT Sorteador</h1>
+<header>
+    <h1>🎮 Rakion MT Sorteador</h1>
+</header>
 
-<div class="contenedor">
+<div class="container">
 
-    <h2>Jugadores Disponibles</h2>
+    <!-- JUGADORES -->
+    <section class="card">
+        <h2>👥 Gestión de Jugadores</h2>
 
-    <div id="jugadores"></div>
+        <div class="agregar-jugador">
+            <input
+                type="text"
+                id="nuevoJugador"
+                placeholder="Nombre del jugador"
+            >
+            <button id="btnAgregar">
+                Agregar
+            </button>
+        </div>
 
-    <button onclick="crearSorteo()">Generar Equipos</button>
+        <div id="listaJugadores"></div>
+    </section>
 
-    <hr>
+    <!-- CONFIG -->
+    <section class="card">
+        <h2>⚙️ Configuración</h2>
 
-    <div id="resultado"></div>
+        <label>Modo</label>
+
+        <select id="modo">
+            <option value="3">3 vs 3</option>
+            <option value="4">4 vs 4</option>
+            <option value="5">5 vs 5</option>
+        </select>
+
+        <label>Mapa</label>
+
+        <select id="mapa">
+            <option>Golem MT</option>
+            <option>Metamine</option>
+            <option>Niflheim</option>
+        </select>
+    </section>
+
+    <!-- PARTICIPANTES -->
+    <section class="card">
+        <h2>🎯 Participantes</h2>
+
+        <p>
+            Selecciona quienes jugarán y luego asigna bombos.
+        </p>
+
+        <div id="participantes"></div>
+    </section>
+
+    <!-- BOMBOS -->
+    <section class="card">
+        <h2>🏆 Bombos</h2>
+
+        <div id="bombosContainer"></div>
+    </section>
+
+    <!-- RULETA -->
+    <section class="card">
+        <h2>🎡 Sorteo</h2>
+
+        <div class="ruleta-container">
+
+            <div class="flecha">
+                ▼
+            </div>
+
+            <div id="ruleta">
+                Presiona iniciar
+            </div>
+
+        </div>
+
+        <button id="btnSortear">
+            🎲 Iniciar Sorteo
+        </button>
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="card">
+
+        <h2>🔥 Equipos</h2>
+
+        <div class="equipos">
+
+            <div class="equipo">
+
+                <h3>🔵 Equipo Azul</h3>
+
+                <ul id="equipoA"></ul>
+
+            </div>
+
+            <div class="equipo">
+
+                <h3>🔴 Equipo Rojo</h3>
+
+                <ul id="equipoB"></ul>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>
 
@@ -28,3 +127,4 @@
 
 </body>
 </html>
+```
