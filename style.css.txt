@@ -1,0 +1,44 @@
+body{
+    font-family: Arial, sans-serif;
+    background:#1e1e1e;
+    color:white;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+}
+
+.contenedor{
+    max-width:800px;
+    margin:auto;
+}
+
+.jugador{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+select{
+    padding:5px;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 20px;
+    cursor:pointer;
+}
+
+.equipos{
+    display:flex;
+    justify-content:space-between;
+    margin-top:20px;
+}
+
+.equipo{
+    width:45%;
+    background:#333;
+    padding:15px;
+    border-radius:10px;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rakion MT Sorteador</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🎲 Rakion MT Sorteador</h1>
+
+<div class="contenedor">
+
+    <h2>Jugadores Disponibles</h2>
+
+    <div id="jugadores"></div>
+
+    <button onclick="crearSorteo()">Generar Equipos</button>
+
+    <hr>
+
+    <div id="resultado"></div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
