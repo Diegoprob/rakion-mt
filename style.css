@@ -178,3 +178,9 @@ button:hover{
     }
 
 }
+.ultimo-sorteado{
+    color:#ff3b3b !important;
+    font-weight:bold;
+    font-size:22px;
+    text-shadow:0 0 10px #ff3b3b;
+}
