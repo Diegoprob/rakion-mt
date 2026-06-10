@@ -1,112 +1,182 @@
-const jugadoresBase = [
-    "Diego",
-    "Juan",
-    "Razzo",
-    "Golemcito",
-    "Gerardo",
-    "Maseku"
-];
-
-const contenedor = document.getElementById("jugadores");
-
-jugadoresBase.forEach(nombre => {
-
-    const div = document.createElement("div");
-    div.className = "jugador";
-
-    div.innerHTML = `
-        <input type="checkbox" value="${nombre}">
-        <span>${nombre}</span>
-
-        <select>
-            <option value="">Bombo</option>
-            <option value="1">Bombo 1</option>
-            <option value="2">Bombo 2</option>
-            <option value="3">Bombo 3</option>
-            <option value="4">Bombo 4</option>
-            <option value="5">Bombo 5</option>
-        </select>
-    `;
-
-    contenedor.appendChild(div);
-
-});
-
-function mezclar(array){
-    return array.sort(() => Math.random() - 0.5);
+```css id="rakioncss1"
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-function crearSorteo(){
-
-    let seleccionados = [];
-
-    document.querySelectorAll(".jugador").forEach(jugador => {
-
-        const check = jugador.querySelector("input");
-        const bombo = jugador.querySelector("select").value;
-
-        if(check.checked){
-
-            if(bombo === ""){
-                alert("Todos los jugadores deben tener bombo");
-                return;
-            }
-
-            seleccionados.push({
-                nombre: check.value,
-                bombo: bombo
-            });
-        }
-    });
-
-    if(seleccionados.length % 2 !== 0){
-        alert("Debe haber cantidad par de jugadores");
-        return;
-    }
-
-    let bombos = {};
-
-    seleccionados.forEach(j => {
-
-        if(!bombos[j.bombo]){
-            bombos[j.bombo] = [];
-        }
-
-        bombos[j.bombo].push(j.nombre);
-
-    });
-
-    let equipoA = [];
-    let equipoB = [];
-
-    for(let bombo in bombos){
-
-        let jugadores = mezclar(bombos[bombo]);
-
-        if(jugadores.length !== 2){
-            alert(
-                `El bombo ${bombo} debe tener exactamente 2 jugadores`
-            );
-            return;
-        }
-
-        equipoA.push(jugadores[0]);
-        equipoB.push(jugadores[1]);
-    }
-
-    document.getElementById("resultado").innerHTML = `
-        <div class="equipos">
-
-            <div class="equipo">
-                <h2>Equipo Azul</h2>
-                ${equipoA.map(j=>`<p>${j}</p>`).join("")}
-            </div>
-
-            <div class="equipo">
-                <h2>Equipo Rojo</h2>
-                ${equipoB.map(j=>`<p>${j}</p>`).join("")}
-            </div>
-
-        </div>
-    `;
+body{
+    background:#0f1117;
+    color:white;
+    font-family:Segoe UI,Arial,sans-serif;
 }
+
+header{
+    text-align:center;
+    padding:20px;
+    background:#171b26;
+    border-bottom:1px solid #2b3245;
+}
+
+header h1{
+    color:#ffb347;
+}
+
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:#171b26;
+    border:1px solid #2b3245;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.card h2{
+    margin-bottom:15px;
+    color:#66d9ef;
+}
+
+.agregar-jugador{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+input[type=text]{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+}
+
+select{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:8px;
+}
+
+button{
+    background:#3a86ff;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.jugador-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+    background:#202636;
+    margin-bottom:8px;
+    border-radius:8px;
+}
+
+.eliminar{
+    background:#d62828;
+}
+
+.participante{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+    padding:10px;
+    background:#202636;
+    border-radius:8px;
+}
+
+.bombo-card{
+    background:#202636;
+    padding:12px;
+    margin-bottom:12px;
+    border-radius:8px;
+}
+
+.ruleta-container{
+    position:relative;
+    height:120px;
+    overflow:hidden;
+    border:2px solid #3a86ff;
+    border-radius:10px;
+    margin-bottom:20px;
+    background:#0d1320;
+}
+
+.flecha{
+    position:absolute;
+    top:5px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:10;
+    color:#ffd166;
+    font-size:24px;
+}
+
+#ruleta{
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:32px;
+    font-weight:bold;
+    color:#ffd166;
+}
+
+.equipos{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.equipo{
+    flex:1;
+    min-width:250px;
+    background:#202636;
+    border-radius:10px;
+    padding:15px;
+}
+
+.equipo h3{
+    margin-bottom:10px;
+}
+
+.equipo ul{
+    list-style:none;
+}
+
+.equipo li{
+    padding:8px;
+    margin-bottom:5px;
+    background:#2c3448;
+    border-radius:6px;
+}
+
+@media(max-width:768px){
+
+    .equipos{
+        flex-direction:column;
+    }
+
+    .agregar-jugador{
+        flex-direction:column;
+    }
+
+}
+```
