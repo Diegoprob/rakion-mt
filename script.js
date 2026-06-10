@@ -1,4 +1,3 @@
-```javascript
 let jugadores =
     JSON.parse(localStorage.getItem("rakionJugadores")) || [
         "Diego",
@@ -269,4 +268,3 @@ async ()=>{
 
 });
 renderJugadores();
-```
