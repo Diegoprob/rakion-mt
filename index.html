@@ -16,6 +16,23 @@
 <div class="container">
 
     <!-- JUGADORES -->
+  <section class="card">
+        <h2>👥 Gestión de Jugadores</h2>
+
+        <div class="agregar-jugador">
+            <input
+                type="text"
+                id="nuevoJugador"
+                placeholder="Nombre del jugador"
+            >
+            <button id="btnAgregar">
+                Agregar
+            </button>
+        </div>
+
+        <div id="listaJugadores"></div>
+    </section>
+    <!-- CONFIG -->
     <section class="card">
     <h2>📋 Información</h2>
 
@@ -31,27 +48,6 @@
         El ganador del sorteo irá al Equipo Azul y el otro al Equipo Rojo.
     </p>
 </section>
-    <!-- CONFIG -->
-    <section class="card">
-        <h2>⚙️ Configuración</h2>
-
-        <label>Modo</label>
-
-        <select id="modo">
-            <option value="3">3 vs 3</option>
-            <option value="4">4 vs 4</option>
-            <option value="5">5 vs 5</option>
-        </select>
-
-        <label>Mapa</label>
-
-        <select id="mapa">
-            <option>Golem MT</option>
-            <option>Metamine</option>
-            <option>Niflheim</option>
-        </select>
-    </section>
-
     <!-- PARTICIPANTES -->
     <section class="card">
         <h2>🎯 Participantes</h2>
