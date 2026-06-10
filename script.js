@@ -209,62 +209,86 @@ async ()=>{
 
     });
 
-    const equipo1 = [];
-    const equipo2 = [];
+const equipo1 = [];
+const equipo2 = [];
 
-    const ordenBombos =
-        Object.keys(bombos).sort();
+const ordenBombos =
+    Object.keys(bombos).sort();
 
-    for(const b of ordenBombos){
+for(const b of ordenBombos){
 
-        const jugadoresBombo =
-            bombos[b];
+    document
+        .querySelectorAll(".ultimo-sorteado")
+        .forEach(x =>
+            x.classList.remove("ultimo-sorteado")
+        );
 
-        if(jugadoresBombo.length !== 2){
+    const jugadoresBombo =
+        bombos[b];
 
-            alert(
-              "Cada bombo debe tener exactamente 2 jugadores."
-            );
+    if(jugadoresBombo.length !== 2){
 
-            return;
-        }
+        alert(
+            "Cada bombo debe tener exactamente 2 jugadores."
+        );
 
-        const ganador =
-            await animarRuleta(
-                jugadoresBombo
-            );
-
-        const perdedor =
-            jugadoresBombo.find(
-                x=>x!==ganador
-            );
-
-        equipo1.push(ganador);
-        equipo2.push(perdedor);
-
+        return;
     }
 
-    equipo1.forEach(j=>{
+    ruleta.innerText =
+        "🎡 Sorteando Bombo " + b;
 
-        const li =
-            document.createElement("li");
+    await new Promise(
+        r => setTimeout(r,800)
+    );
 
-        li.textContent=j;
+    const ganador =
+        await animarRuleta(
+            jugadoresBombo
+        );
 
-        equipoA.appendChild(li);
+    const perdedor =
+        jugadoresBombo.find(
+            x => x !== ganador
+        );
 
-    });
+    equipo1.push(ganador);
+    equipo2.push(perdedor);
 
-    equipo2.forEach(j=>{
+    const liA =
+        document.createElement("li");
 
-        const li =
-            document.createElement("li");
+    liA.textContent =
+        ganador;
 
-        li.textContent=j;
+    liA.classList.add(
+        "ultimo-sorteado"
+    );
 
-        equipoB.appendChild(li);
+    equipoA.appendChild(liA);
 
-    });
+    const liB =
+        document.createElement("li");
 
+    liB.textContent =
+        perdedor;
+
+    liB.classList.add(
+        "ultimo-sorteado"
+    );
+
+    equipoB.appendChild(liB);
+
+    await new Promise(
+        r => setTimeout(r,1500)
+    );
+
+}
+
+document
+    .querySelectorAll(".ultimo-sorteado")
+    .forEach(x =>
+        x.classList.remove("ultimo-sorteado")
+    );
 });
 renderJugadores();
