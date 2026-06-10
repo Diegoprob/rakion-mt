@@ -1,182 +1,272 @@
-```css id="rakioncss1"
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+```javascript
+let jugadores =
+    JSON.parse(localStorage.getItem("rakionJugadores")) || [
+        "Diego",
+        "Juan",
+        "Razzo",
+        "Golemcito",
+        "Gerardo",
+        "Maseku"
+    ];
+
+const listaJugadores = document.getElementById("listaJugadores");
+const participantesDiv = document.getElementById("participantes");
+const bombosContainer = document.getElementById("bombosContainer");
+
+const equipoA = document.getElementById("equipoA");
+const equipoB = document.getElementById("equipoB");
+
+const ruleta = document.getElementById("ruleta");
+
+function guardarJugadores(){
+    localStorage.setItem(
+        "rakionJugadores",
+        JSON.stringify(jugadores)
+    );
 }
 
-body{
-    background:#0f1117;
-    color:white;
-    font-family:Segoe UI,Arial,sans-serif;
+function renderJugadores(){
+
+    listaJugadores.innerHTML = "";
+
+    jugadores.forEach((nombre,index)=>{
+
+        const div = document.createElement("div");
+
+        div.className = "jugador-item";
+
+        div.innerHTML = `
+            <span>${nombre}</span>
+
+            <button
+                class="eliminar"
+                onclick="eliminarJugador(${index})"
+            >
+                Eliminar
+            </button>
+        `;
+
+        listaJugadores.appendChild(div);
+
+    });
+
+    renderParticipantes();
 }
 
-header{
-    text-align:center;
-    padding:20px;
-    background:#171b26;
-    border-bottom:1px solid #2b3245;
+function eliminarJugador(index){
+
+    jugadores.splice(index,1);
+
+    guardarJugadores();
+
+    renderJugadores();
+
 }
 
-header h1{
-    color:#ffb347;
+document
+.getElementById("btnAgregar")
+.addEventListener("click",()=>{
+
+    const input =
+        document.getElementById("nuevoJugador");
+
+    const nombre = input.value.trim();
+
+    if(nombre==="") return;
+
+    jugadores.push(nombre);
+
+    guardarJugadores();
+
+    input.value="";
+
+    renderJugadores();
+
+});
+
+function renderParticipantes(){
+
+    participantesDiv.innerHTML = "";
+
+    jugadores.forEach(nombre=>{
+
+        const div = document.createElement("div");
+
+        div.className = "participante";
+
+        div.innerHTML = `
+            <input
+                type="checkbox"
+                class="chkJugador"
+                value="${nombre}"
+            >
+
+            <span>${nombre}</span>
+
+            <select class="bombo">
+                <option value="">Bombo</option>
+                <option value="1">Bombo 1</option>
+                <option value="2">Bombo 2</option>
+                <option value="3">Bombo 3</option>
+                <option value="4">Bombo 4</option>
+                <option value="5">Bombo 5</option>
+            </select>
+        `;
+
+        participantesDiv.appendChild(div);
+
+    });
+
 }
 
-.container{
-    width:95%;
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
+function mezclar(arr){
+
+    return [...arr].sort(
+        ()=>Math.random()-0.5
+    );
+
 }
 
-.card{
-    background:#171b26;
-    border:1px solid #2b3245;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:20px;
+async function animarRuleta(opciones){
+
+    return new Promise(resolve=>{
+
+        let vueltas = 0;
+
+        const intervalo = setInterval(()=>{
+
+            const random =
+                opciones[
+                    Math.floor(
+                        Math.random()*opciones.length
+                    )
+                ];
+
+            ruleta.innerText = random;
+
+            vueltas++;
+
+            if(vueltas > 25){
+
+                clearInterval(intervalo);
+
+                const ganador =
+                    opciones[
+                        Math.floor(
+                            Math.random()*opciones.length
+                        )
+                    ];
+
+                ruleta.innerText =
+                    "🏆 " + ganador;
+
+                resolve(ganador);
+
+            }
+
+        },120);
+
+    });
+
 }
 
-.card h2{
-    margin-bottom:15px;
-    color:#66d9ef;
-}
+document
+.getElementById("btnSortear")
+.addEventListener(
+"click",
+async ()=>{
 
-.agregar-jugador{
-    display:flex;
-    gap:10px;
-    margin-bottom:15px;
-}
+    equipoA.innerHTML="";
+    equipoB.innerHTML="";
 
-input[type=text]{
-    flex:1;
-    padding:10px;
-    border:none;
-    border-radius:8px;
-}
+    const checks =
+        document.querySelectorAll(".participante");
 
-select{
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-    margin-bottom:15px;
-    border:none;
-    border-radius:8px;
-}
+    let bombos = {};
 
-button{
-    background:#3a86ff;
-    color:white;
-    border:none;
-    padding:10px 16px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-}
+    checks.forEach(item=>{
 
-button:hover{
-    opacity:0.9;
-}
+        const activo =
+            item.querySelector("input").checked;
 
-.jugador-item{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px;
-    background:#202636;
-    margin-bottom:8px;
-    border-radius:8px;
-}
+        const nombre =
+            item.querySelector("input").value;
 
-.eliminar{
-    background:#d62828;
-}
+        const bombo =
+            item.querySelector("select").value;
 
-.participante{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:10px;
-    padding:10px;
-    background:#202636;
-    border-radius:8px;
-}
+        if(activo){
 
-.bombo-card{
-    background:#202636;
-    padding:12px;
-    margin-bottom:12px;
-    border-radius:8px;
-}
+            if(bombo===""){
+                return;
+            }
 
-.ruleta-container{
-    position:relative;
-    height:120px;
-    overflow:hidden;
-    border:2px solid #3a86ff;
-    border-radius:10px;
-    margin-bottom:20px;
-    background:#0d1320;
-}
+            if(!bombos[bombo]){
+                bombos[bombo]=[];
+            }
 
-.flecha{
-    position:absolute;
-    top:5px;
-    left:50%;
-    transform:translateX(-50%);
-    z-index:10;
-    color:#ffd166;
-    font-size:24px;
-}
+            bombos[bombo].push(nombre);
+        }
 
-#ruleta{
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:32px;
-    font-weight:bold;
-    color:#ffd166;
-}
+    });
 
-.equipos{
-    display:flex;
-    gap:20px;
-    flex-wrap:wrap;
-}
+    const equipo1 = [];
+    const equipo2 = [];
 
-.equipo{
-    flex:1;
-    min-width:250px;
-    background:#202636;
-    border-radius:10px;
-    padding:15px;
-}
+    const ordenBombos =
+        Object.keys(bombos).sort();
 
-.equipo h3{
-    margin-bottom:10px;
-}
+    for(const b of ordenBombos){
 
-.equipo ul{
-    list-style:none;
-}
+        const jugadoresBombo =
+            bombos[b];
 
-.equipo li{
-    padding:8px;
-    margin-bottom:5px;
-    background:#2c3448;
-    border-radius:6px;
-}
+        if(jugadoresBombo.length !== 2){
 
-@media(max-width:768px){
+            alert(
+              "Cada bombo debe tener exactamente 2 jugadores."
+            );
 
-    .equipos{
-        flex-direction:column;
+            return;
+        }
+
+        const ganador =
+            await animarRuleta(
+                jugadoresBombo
+            );
+
+        const perdedor =
+            jugadoresBombo.find(
+                x=>x!==ganador
+            );
+
+        equipo1.push(ganador);
+        equipo2.push(perdedor);
+
     }
 
-    .agregar-jugador{
-        flex-direction:column;
-    }
+    equipo1.forEach(j=>{
 
-}
+        const li =
+            document.createElement("li");
+
+        li.textContent=j;
+
+        equipoA.appendChild(li);
+
+    });
+
+    equipo2.forEach(j=>{
+
+        const li =
+            document.createElement("li");
+
+        li.textContent=j;
+
+        equipoB.appendChild(li);
+
+    });
+
+});
+renderJugadores();
 ```
